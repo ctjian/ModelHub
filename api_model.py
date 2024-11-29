@@ -66,7 +66,7 @@ class APIModel(ABC):
         self.conversation_history.append({"role": "assistant", "content": resp})
         return resp
     
-    def request_stream(self, query: str, multi_turns=False, model=None):
+    def request_stream(self, query: str, multi_turns=False, model=None, stop_event=None):
         global stop_streaming
         if not multi_turns:
             self.reset_conversation()
@@ -87,8 +87,10 @@ class APIModel(ABC):
                 **params
             )
             # Process the streamed response
-            accumulated_response = ""
             for chunk in response:
+                if stop_event is not None and stop_event.is_set():
+                    response.close()
+                    print("Streaming stopped by user.")
                 yield chunk.choices[0].delta.content
             
         except Exception as e:
@@ -141,13 +143,15 @@ def create_llm_client(api_key="EMPTY", host_url="http://192.168.50.71:8000/v1", 
 # Example usage:
 
 if __name__ == "__main__":
-
-
-    gn_llm = APIModel('FlLH8gAJrGOYKStzvF7P8wDKbFXG8dFz9plF', 'https://apiemp.baystoneai.com/cognihub/service/v1', "qwen2.5-instruct")
-    import time
-    start = time.time()
-    resps = gn_llm.request_in_parallel(["你是？"] * 1)
-    print(time.time() - start)
-    for r in resps:
-        print("#" * 50)
-        print(r)
+    from config.api_keys import *
+    gn_llm = APIModel(Sili_APIKEY, Sili_BASE_URL, "01-ai/Yi-1.5-9B-Chat-16K")
+    # import time
+    # start = time.time()
+    # resps = gn_llm.request_in_parallel(["你是？"] * 1)
+    # print(time.time() - start)
+    # for r in resps:
+    #     print("#" * 50)
+    #     print(r)
+    # resp = gn_llm.request_stream("你是？")
+    # for r in resp:
+    #     print(r)

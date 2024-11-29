@@ -26,7 +26,8 @@ def select_model(*selected_models):
     if not selected_models:
         status_message = "请至少选择一个模型。"
         return gr.update(value=[]), status_message
-
+    
+    print(selected_models)
     for model_name in selected_models:
         model_config = MODEL_NAME_TO_CONFIG.get(model_name)
         if model_config:
@@ -73,7 +74,7 @@ def submit_message(user_input):
         model_name = client_info['name']
         llm_client = client_info['client']
         response = ''
-        for chunk in llm_client.request_stream(user_input, multi_turns=True):
+        for chunk in llm_client.request_stream(user_input, multi_turns=False, stop_event=stop_event):
             if stop_event.is_set():
                 break
             if chunk:

@@ -13,8 +13,8 @@ def create_model_selectors():
     for company in COMPANY_MODEL_MAPPING:
         selectors.append(
             gr.CheckboxGroup(
-                choices=[f"{company} - {model['name']}" for model in COMPANY_MODEL_MAPPING[company]],
-                label=f"选择 {company} 的模型",
+                choices=[f"{model['name']}" for model in COMPANY_MODEL_MAPPING[company]],
+                label=f"{company}",
                 elem_classes=["gr-checkboxgroup"],  # 添加自定义类
             )
         )
@@ -75,4 +75,4 @@ with gr.Blocks() as demo:
         outputs=status_output
     )
 
-demo.launch()
+demo.launch(server_port=7862) 
