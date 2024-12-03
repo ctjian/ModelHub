@@ -34,7 +34,8 @@ def select_model(*selected_models):
             llm_client = APIModel(
                 api_key=model_config['api_key'],
                 host_url=model_config['host_url'],
-                model=model_config['model']
+                model=model_config['model'],
+                system_prompt=model_config['system_prompt'] if 'system_prompt' in model_config else 'You are a friendly assistant.'
             )
             llm_clients.append({'name': model_name, 'client': llm_client})
         else:

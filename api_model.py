@@ -3,16 +3,19 @@ import sys
 import copy
 from abc import ABC
 
+import numpy as np
 from openai import OpenAI
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from config.api_keys import *
 
 
 class APIModel(ABC):
-    def __init__(self, api_key="EMPTY", host_url="http://192.168.50.71:8000/v1", model: str = "qwen7b",
+    def __init__(self, api_key="EMPTY", host_url="http://192.168.50.71:8000/v1", model: str = "qwen7b", system_prompt: str = "You are a helpful assistant.",
                  temperature: float = 0.1, max_tokens: int = 2048, top_p: float = 0.9, **more_params):
         self.api_key = api_key
+        self.api_key_pool = Sili_APIKEYS
         self.host_url = host_url
+        self.system_prompt = system_prompt
         self.params = {
             'model': model,
             'temperature': temperature,
@@ -20,13 +23,14 @@ class APIModel(ABC):
             'max_tokens': max_tokens, 
             **more_params
         }
-        self.conversation_history = []  # Used to store multi-turn conversation history
+        self.conversation_history = [{"role": "system", "content": self.system_prompt}]  # Used to store multi-turn conversation history
 
         # Initialize OpenAI client with api_key and base_url
         self.client = OpenAI(api_key=self.api_key, base_url=self.host_url)
 
 
     def request(self, query: str, multi_turns=False, model=None) -> str:
+        self.api_key = self.api_key_pool[np.random.randint(0, len(self.api_key_pool))]
         if not multi_turns:
             self.reset_conversation()
 
@@ -116,14 +120,14 @@ class APIModel(ABC):
                     result = future.result()
                     results.append(result)
                 except Exception as e:
-                    # print(f"Error during request for query '{query}': {e}")
+                    print(f"Error during request for query '{query}': {e}")
                     results.append('')
 
         return results
 
     def reset_conversation(self):
         """Reset conversation history"""
-        self.conversation_history = []
+        self.conversation_history = [{"role": "system", "content": self.system_prompt}] 
 
 
 # Factory function to create the appropriate client
@@ -144,14 +148,15 @@ def create_llm_client(api_key="EMPTY", host_url="http://192.168.50.71:8000/v1", 
 
 if __name__ == "__main__":
     from config.api_keys import *
-    gn_llm = APIModel(Sili_APIKEY, Sili_BASE_URL, "01-ai/Yi-1.5-9B-Chat-16K")
-    # import time
-    # start = time.time()
-    # resps = gn_llm.request_in_parallel(["你是？"] * 1)
-    # print(time.time() - start)
+    gn_llm = APIModel(Sili_APIKEY, Sili_BASE_URL, "Qwen/Qwen2.5-32B-Instruct")
+    # resp = gn_llm.request("你是？")
+    # print(resp)
+
+    import time
+    start = time.time()
+    resps = gn_llm.request_in_parallel(["什么是机器学习"] * 1)
+    print(resps)
+    print(time.time() - start)
     # for r in resps:
     #     print("#" * 50)
-    #     print(r)
-    # resp = gn_llm.request_stream("你是？")
-    # for r in resp:
     #     print(r)

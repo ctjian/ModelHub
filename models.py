@@ -36,24 +36,28 @@ COMPANY_MODEL_MAPPING = {
         {
             'name': 'Qwen2.5-7B-Instruct',
             'model': 'Qwen/Qwen2.5-7B-Instruct',
+            'system_prompt': 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.',
             'api_key': Sili_APIKEY,
             'host_url': Sili_BASE_URL
         },
         {
             'name': 'Qwen2.5-14B-Instruct',
             'model': 'Vendor-A/Qwen/Qwen2.5-14B-Instruct',
+            'system_prompt': 'You are Qwen, created by Alibaba Cloud. You are a helpful assistant.',
             'api_key': Sili_APIKEY,
             'host_url': Sili_BASE_URL
         },
         {
             'name': 'Qwen2.5-32B-Instruct',
             'model': 'Vendor-A/Qwen/Qwen2.5-32B-Instruct',
+            'system_prompt': 'You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.',
             'api_key': Sili_APIKEY,
             'host_url': Sili_BASE_URL
         },
         {
             'name': 'Qwen2.5-72B-Instruct',
             'model': 'Vendor-A/Qwen/Qwen2.5-72B-Instruct',
+            'system_prompt': 'You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.',
             'api_key': Sili_APIKEY,
             'host_url': Sili_BASE_URL
         },
@@ -64,13 +68,20 @@ COMPANY_MODEL_MAPPING = {
             'api_key': 'EMPTY',
             'host_url': 'http://192.168.30.69:8000/v1'
         },
-        # Qwen/QwQ-32B-Preview
+        # Qwen2
         {
-            'name': 'Qwen/QwQ-32B-Preview',
-            'model': 'Qwen/QwQ-32B-Preview',
+            'name': 'Qwen2-7B-Instruct',
+            'model': 'Qwen/Qwen2-7B-Instruct',
+            'system_prompt': 'You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.',
             'api_key': Sili_APIKEY,
             'host_url': Sili_BASE_URL,
-            'system_prompt': 'You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.'
+        },
+        {
+            'name': 'Qwen2-1.5B-Instruct',
+            'model': 'Qwen/Qwen2-1.5B-Instruct',
+            'system_prompt': 'You are a helpful and harmless assistant. You are Qwen developed by Alibaba. You should think step-by-step.',
+            'api_key': Sili_APIKEY,
+            'host_url': Sili_BASE_URL,
         },
     ],
     '零一万物':[
@@ -97,8 +108,29 @@ COMPANY_MODEL_MAPPING = {
             'model': 'yi-34b-chat-200K',
             'api_key': Wlai_APIKEY,
             'host_url': Wlai_BASE_URL
+        }
+    ],
+    '腾讯': [
+        {
+            'name': 'Hunyuan-A52B-Instruct',
+            'model': 'Tencent/Hunyuan-A52B-Instruct',
+            'api_key': Sili_APIKEY,
+            'host_url': Sili_BASE_URL
         },
-
+    ],
+    'Meta': [
+        {
+            'name': 'Meta-Llama-3.1-405B-Instruct',
+            'model': 'meta-llama/Meta-Llama-3.1-405B-Instruct',
+            'api_key': Sili_APIKEY,
+            'host_url': Sili_BASE_URL
+        },
+        {
+            'name': 'Meta-Llama-3.1-70B-Instruct',
+            'model': 'meta-llama/Meta-Llama-3.1-70B-Instruct',
+            'api_key': Sili_APIKEY,
+            'host_url': Sili_BASE_URL
+        }
     ]
 }
 
